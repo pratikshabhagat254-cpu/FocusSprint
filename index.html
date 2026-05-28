@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusSprint — Smart Study Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="logo-text">FocusSprint</span>
+      <!-- theme toggle lives here -->
+      <button class="theme-toggle" id="themeToggle" title="Switch theme">
+        <span class="theme-icon-night">🌙</span>
+        <span class="theme-icon-day">☀️</span>
+      </button>
+    </div>
+
+    <div class="sidebar-user" id="sidebarUser" data-view="profile">
+      <div class="sidebar-avatar" id="sidebarAvatar">?</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sidebarUserName">Set up profile</div>
+        <div class="sidebar-user-branch" id="sidebarUserBranch">Click to edit →</div>
+      </div>
+      <!-- level badge -->
+      <div class="sidebar-level-badge" id="sidebarLevelBadge">Lv.1</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-view="dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-view="tasks">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>All Tasks</span>
+      </a>
+      <a href="#" class="nav-item" data-view="analytics">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="18" y1="20" x2="18" y2="10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="20" x2="12" y2="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="6" y1="20" x2="6" y2="14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Analytics</span>
+      </a>
+      <a href="#" class="nav-item" data-view="leaderboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 15l-7 4 2-8L2 7l8-1 2-7 2 7 8 1-5 4 2 8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span>Leaderboard</span>
+      </a>
+      <a href="#" class="nav-item" data-view="groups">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Groups</span>
+        <span class="nav-badge nav-badge--blue" id="navGroupCount" style="display:none">0</span>
+      </a>
+      <a href="#" class="nav-item" data-view="profile">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span>Profile</span>
+      </a>
+
+      <div class="nav-divider"></div>
+
+      <a href="#" class="nav-item nav-filter" data-filter="high">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="17" x2="12.01" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>High Priority</span>
+        <span class="nav-badge" id="navHighCount">0</span>
+      </a>
+      <a href="#" class="nav-item nav-filter" data-filter="overdue">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Overdue</span>
+        <span class="nav-badge nav-badge--red" id="navOverdueCount">0</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-summary">
+      <div class="summary-label">Today's Progress</div>
+      <div class="summary-progress-bar">
+        <div class="summary-progress-fill" id="sidebarProgressFill"></div>
+      </div>
+      <div class="summary-stats-row">
+        <span id="sidebarTodayDone">0 done today</span>
+        <span id="sidebarPercent">0%</span>
+      </div>
+    </div>
+
+    <!-- points display in sidebar -->
+    <div class="sidebar-points" id="sidebarPoints">
+      <div class="points-left">
+        <span class="points-fire">⚡</span>
+        <div>
+          <div class="points-num" id="sidebarPointsNum">0</div>
+          <div class="points-label">total points</div>
+        </div>
+      </div>
+      <div class="sidebar-streak" id="sidebarStreak">
+        <span class="streak-fire">🔥</span>
+        <div>
+          <div class="streak-num" id="streakCount">0</div>
+          <div class="streak-label">day streak</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="sidebar-close" id="sidebarClose">✕</button>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="page-title">
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSubtitle">Good to see you. Here's where you stand today.</p>
+      </div>
+      <button class="btn-add-task" id="btnOpenModal">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        Add Task
+      </button>
+    </header>
+
+    <!-- ==================== VIEW: DASHBOARD ==================== -->
+    <section id="view-dashboard" class="view active-view">
+
+      <div class="welcome-card" id="welcomeCard">
+        <div class="welcome-left">
+          <div class="welcome-avatar" id="welcomeAvatar">?</div>
+          <div class="welcome-text">
+            <div class="welcome-greeting" id="welcomeGreeting">Hey there 👋</div>
+            <div class="welcome-name" id="welcomeName">Set up your profile to get started</div>
+            <div class="welcome-goal" id="welcomeGoal"></div>
+            <!-- level pill shown in welcome card -->
+            <div class="welcome-level-row" id="welcomeLevelRow"></div>
+          </div>
+        </div>
+        <div class="welcome-right">
+          <div class="welcome-quote" id="welcomeQuote">"The secret of getting ahead is getting started."</div>
+          <div class="welcome-date" id="welcomeDate"></div>
+        </div>
+      </div>
+
+      <div class="insight-banner" id="insightBanner">
+        <span class="insight-icon">💡</span>
+        <span id="insightText">Loading your insights...</span>
+      </div>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--blue">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.8"/><polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="1.8"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="totalCount">0</span>
+            <span class="stat-label">Total Tasks</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--green">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><polyline points="22,4 12,14.01 9,11.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="completedCount">0</span>
+            <span class="stat-label">Completed</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--amber">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="pendingCount">0</span>
+            <span class="stat-label">Pending</span>
+          </div>
+        </div>
+        <div class="stat-card stat-card--alert" id="overdueCard">
+          <div class="stat-icon stat-icon--red">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="overdueCount">0</span>
+            <span class="stat-label">Overdue</span>
+          </div>
+        </div>
+        <!-- points card -->
+        <div class="stat-card stat-card--points">
+          <div class="stat-icon stat-icon--purple">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26 12,2" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="pointsCount">0</span>
+            <span class="stat-label">Points</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="progress-section">
+        <div class="progress-header">
+          <span class="progress-title">Overall Completion</span>
+          <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+      </section>
+
+      <div class="dashboard-two-col">
+        <div class="dash-panel">
+          <div class="dash-panel-header">
+            <span class="dash-panel-title">Today's Focus</span>
+            <span class="dash-panel-badge" id="todayCount">0 tasks</span>
+          </div>
+          <div class="dash-panel-body" id="todayTasksList">
+            <div class="panel-empty">No tasks due today — enjoy the breathing room.</div>
+          </div>
+        </div>
+        <div class="dash-panel">
+          <div class="dash-panel-header">
+            <span class="dash-panel-title">Coming Up</span>
+            <span class="dash-panel-badge">Next 7 days</span>
+          </div>
+          <div class="dash-panel-body" id="upcomingList">
+            <div class="panel-empty">No upcoming deadlines.</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== VIEW: ALL TASKS ==================== -->
+    <section id="view-tasks" class="view">
+
+      <div class="controls-bar">
+        <div class="filter-tabs" role="tablist">
+          <button class="filter-tab active" data-filter="all" role="tab">All</button>
+          <button class="filter-tab" data-filter="pending" role="tab">Pending</button>
+          <button class="filter-tab" data-filter="completed" role="tab">Completed</button>
+          <button class="filter-tab" data-filter="high" role="tab">🔴 High</button>
+          <button class="filter-tab" data-filter="overdue" role="tab">⏰ Overdue</button>
+        </div>
+        <div class="search-sort-row">
+          <div class="search-wrapper">
+            <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="Search tasks, subjects..." />
+          </div>
+          <select class="sort-select" id="sortSelect">
+            <option value="created">Latest First</option>
+            <option value="deadline">By Deadline</option>
+            <option value="priority">By Priority</option>
+            <option value="az">A → Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="tasks-list" id="tasksList"></div>
+      <div class="empty-state" id="emptyState" hidden>
+        <div class="empty-illustration">
+          <svg width="64" height="64" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" stroke="var(--border)" stroke-width="2" stroke-dasharray="6 4"/>
+            <path d="M28 40h24M40 28v24" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="empty-title">Nothing here yet</h3>
+        <p class="empty-desc">Add a task to start tracking your progress.</p>
+        <button class="btn-empty-add" id="btnEmptyAdd">+ Add Task</button>
+      </div>
+
+    </section>
+
+    <!-- ==================== VIEW: ANALYTICS ==================== -->
+    <section id="view-analytics" class="view">
+
+      <!-- Tab system for Today / Weekly / Monthly -->
+      <div class="analytics-tabs">
+        <button class="analytics-tab active" data-period="today">Today</button>
+        <button class="analytics-tab" data-period="weekly">Weekly</button>
+        <button class="analytics-tab" data-period="monthly">Monthly</button>
+      </div>
+
+      <!-- TODAY PANEL -->
+      <div id="analytics-today" class="analytics-period active-period">
+        <div class="analytics-summary-row">
+          <div class="analytics-card analytics-card--score">
+            <div class="analytics-card-label">Productivity Score</div>
+            <div class="analytics-score-ring">
+              <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--glass-border)" stroke-width="8"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--accent)" stroke-width="8"
+                  stroke-linecap="round" stroke-dasharray="251.2" stroke-dashoffset="251.2"
+                  id="scoreRingCircle" style="transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)"/>
+              </svg>
+              <div class="score-ring-value" id="productivityScore">0</div>
+            </div>
+            <div class="analytics-card-sub">out of 100</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Completed Today</div>
+            <div class="analytics-big-num" id="completedToday">0</div>
+            <div class="analytics-card-sub">tasks done today</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Pending Today</div>
+            <div class="analytics-big-num" id="pendingToday">0</div>
+            <div class="analytics-card-sub">still to do</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Points Today</div>
+            <div class="analytics-big-num" id="pointsToday">0</div>
+            <div class="analytics-card-sub">earned today</div>
+          </div>
+        </div>
+        <div class="analytics-section-title">Focus Score Breakdown</div>
+        <div class="focus-score-card" id="focusScoreCard"></div>
+      </div>
+
+      <!-- WEEKLY PANEL -->
+      <div id="analytics-weekly" class="analytics-period">
+        <div class="analytics-summary-row">
+          <div class="analytics-card">
+            <div class="analytics-card-label">This Week</div>
+            <div class="analytics-big-num" id="completedWeek">0</div>
+            <div class="analytics-card-sub">tasks completed</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Points This Week</div>
+            <div class="analytics-big-num" id="pointsWeek">0</div>
+            <div class="analytics-card-sub">earned this week</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Consistency</div>
+            <div class="analytics-big-num" id="consistencyRate">0%</div>
+            <div class="analytics-card-sub">active days / 7</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Most Productive</div>
+            <div class="analytics-big-num" id="mostProductiveSubject" style="font-size:15px;margin-top:6px">—</div>
+            <div class="analytics-card-sub">top subject</div>
+          </div>
+        </div>
+        <div class="analytics-section-title">7-Day Activity</div>
+        <div class="activity-chart-card">
+          <div class="activity-chart" id="activityChart"></div>
+          <div class="activity-days" id="activityDays"></div>
+        </div>
+        <div class="analytics-section-title">Subject Breakdown</div>
+        <div class="subject-breakdown" id="subjectBreakdown">
+          <div class="panel-empty">Add tasks with subjects to see breakdown.</div>
+        </div>
+      </div>
+
+      <!-- MONTHLY PANEL -->
+      <div id="analytics-monthly" class="analytics-period">
+        <div class="analytics-summary-row">
+          <div class="analytics-card">
+            <div class="analytics-card-label">This Month</div>
+            <div class="analytics-big-num" id="completedMonth">0</div>
+            <div class="analytics-card-sub">tasks completed</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Completion Rate</div>
+            <div class="analytics-big-num" id="completionRate">0%</div>
+            <div class="analytics-card-sub">all-time average</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Overdue Rate</div>
+            <div class="analytics-big-num" id="overdueRate">0%</div>
+            <div class="analytics-card-sub">tasks gone overdue</div>
+          </div>
+          <div class="analytics-card">
+            <div class="analytics-card-label">Total Points</div>
+            <div class="analytics-big-num" id="totalPointsMonth">0</div>
+            <div class="analytics-card-sub">all-time earned</div>
+          </div>
+        </div>
+        <div class="analytics-section-title">Priority Distribution</div>
+        <div class="priority-distribution" id="priorityDistribution"></div>
+        <div class="analytics-section-title">Performance Insights</div>
+        <div class="insights-list" id="insightsList"></div>
+      </div>
+
+    </section>
+
+    <!-- ==================== VIEW: LEADERBOARD ==================== -->
+    <section id="view-leaderboard" class="view">
+      <div class="leaderboard-header-row">
+        <div class="leaderboard-your-rank" id="yourRankCard">
+          <div class="your-rank-label">Your Rank</div>
+          <div class="your-rank-num" id="yourRankNum">#—</div>
+          <div class="your-rank-points" id="yourRankPoints">0 pts</div>
+        </div>
+        <div class="leaderboard-filters">
+          <button class="lb-tab active" data-lb="alltime">All Time</button>
+          <button class="lb-tab" data-lb="weekly">This Week</button>
+        </div>
+      </div>
+      <div class="leaderboard-top3" id="leaderboardTop3"></div>
+      <div class="leaderboard-list" id="leaderboardList"></div>
+      <div class="leaderboard-note">
+        <span>🌐</span>
+        <span>Rankings are based on your FocusSprint network. Add friends to compete!</span>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW: GROUPS ==================== -->
+    <section id="view-groups" class="view">
+
+      <div class="groups-actions-row">
+        <button class="btn-create-group" id="btnCreateGroup">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          Create Group
+        </button>
+        <button class="btn-join-group" id="btnJoinGroup">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Join with ID
+        </button>
+      </div>
+
+      <div id="groupsList" class="groups-list">
+        <div class="groups-empty" id="groupsEmpty">
+          <div class="empty-illustration">
+            <svg width="56" height="56" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="38" stroke="var(--border)" stroke-width="2" stroke-dasharray="6 4"/><circle cx="30" cy="36" r="8" stroke="var(--accent)" stroke-width="2"/><circle cx="50" cy="36" r="8" stroke="var(--accent)" stroke-width="2"/><path d="M18 56c0-6.627 5.373-12 12-12h20c6.627 0 12 5.373 12 12" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="empty-title">No groups yet</h3>
+          <p class="empty-desc">Create a group or join one with a Group ID to study together.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== VIEW: PROFILE ==================== -->
+    <section id="view-profile" class="view">
+      <div class="profile-layout">
+        <div class="profile-card">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" id="profileAvatarDisplay">?</div>
+            <button class="profile-avatar-edit-btn" id="btnChangeAvatar" title="Cycle avatar color">✎</button>
+          </div>
+          <div class="profile-name-display" id="profileNameDisplay">Your Name</div>
+          <div class="profile-branch-display" id="profileBranchDisplay">—</div>
+          <!-- level + points display -->
+          <div class="profile-level-row" id="profileLevelRow">
+            <span class="profile-level-badge" id="profileLevelBadge">Beginner</span>
+            <span class="profile-points-badge" id="profilePointsBadge">0 pts</span>
+          </div>
+          <div class="profile-stats-row">
+            <div class="profile-stat">
+              <span class="profile-stat-val" id="profileStreakVal">0</span>
+              <span class="profile-stat-label">Streak</span>
+            </div>
+            <div class="profile-stat-divider"></div>
+            <div class="profile-stat">
+              <span class="profile-stat-val" id="profileScoreVal">0</span>
+              <span class="profile-stat-label">Score</span>
+            </div>
+            <div class="profile-stat-divider"></div>
+            <div class="profile-stat">
+              <span class="profile-stat-val" id="profileDoneVal">0</span>
+              <span class="profile-stat-label">Done</span>
+            </div>
+          </div>
+          <!-- level progress bar -->
+          <div class="level-progress-wrap">
+            <div class="level-progress-label">
+              <span id="levelProgressLabel">Level Progress</span>
+              <span id="levelProgressPct">0%</span>
+            </div>
+            <div class="level-progress-bar">
+              <div class="level-progress-fill" id="levelProgressFill"></div>
+            </div>
+          </div>
+          <div class="achievements" id="achievementsDisplay"></div>
+        </div>
+
+        <div class="profile-form-card">
+          <div class="profile-form-title">Edit Profile</div>
+          <form id="profileForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" id="profileName" placeholder="e.g. Rahul Sharma" maxlength="50" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" id="profileUsername" placeholder="e.g. rahul_cs23" maxlength="30" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Branch / Field</label>
+                <select class="form-select" id="profileBranch">
+                  <option value="">Select branch</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Information Technology">Information Technology</option>
+                  <option value="Electronics & TC">Electronics & TC</option>
+                  <option value="Mechanical">Mechanical</option>
+                  <option value="Civil">Civil</option>
+                  <option value="Electrical">Electrical</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Year</label>
+                <select class="form-select" id="profileYear">
+                  <option value="">Select year</option>
+                  <option value="FY">First Year</option>
+                  <option value="SY">Second Year</option>
+                  <option value="TY">Third Year</option>
+                  <option value="BE">Final Year</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bio / About</label>
+              <textarea class="form-textarea" id="profileBio" placeholder="Tell your study group a bit about you..." rows="2" maxlength="200"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Study Goal</label>
+              <input type="text" class="form-input" id="profileGoal" placeholder="e.g. Clear GATE 2026 with AIR under 500" maxlength="100" />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Daily Target (hrs)</label>
+                <input type="number" class="form-input" id="profileTarget" placeholder="e.g. 6" min="1" max="16" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Weekly Target (hrs)</label>
+                <input type="number" class="form-input" id="profileWeeklyTarget" placeholder="e.g. 35" min="1" max="100" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Motivational Quote</label>
+              <input type="text" class="form-input" id="profileQuote" placeholder="Your personal motto..." maxlength="120" />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-save">Save Profile</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ADD / EDIT TASK MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">New Task</h2>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+      <form class="task-form" id="taskForm" novalidate>
+        <div class="form-group">
+          <label class="form-label">Task Name <span class="required">*</span></label>
+          <input type="text" class="form-input" id="taskName" placeholder="e.g. Chapter 5 — Data Structures" maxlength="100" required />
+          <span class="form-error" id="taskNameError"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject / Category</label>
+          <input type="text" class="form-input" id="taskSubject" placeholder="e.g. DSA, Mathematics, Physics" maxlength="40" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Priority</label>
+            <select class="form-select" id="taskPriority">
+              <option value="low">🟢 Low</option>
+              <option value="medium" selected>🟡 Medium</option>
+              <option value="high">🔴 High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Due Date</label>
+            <input type="date" class="form-input" id="taskDueDate" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estimated Time (mins)</label>
+          <input type="number" class="form-input" id="taskEstTime" placeholder="e.g. 60" min="5" max="480" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes (optional)</label>
+          <textarea class="form-textarea" id="taskNotes" placeholder="Any extra details..." rows="3" maxlength="300"></textarea>
+        </div>
+        <input type="hidden" id="editTaskId" value="" />
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" id="btnCancel">Cancel</button>
+          <button type="submit" class="btn-save" id="btnSave">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CREATE GROUP MODAL -->
+  <div class="modal-backdrop" id="createGroupBackdrop" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Create Group</h2>
+        <button class="modal-close" id="createGroupClose">✕</button>
+      </div>
+      <form id="createGroupForm" novalidate>
+        <div class="form-group">
+          <label class="form-label">Group Name <span class="required">*</span></label>
+          <input type="text" class="form-input" id="newGroupName" placeholder="e.g. GATE 2026 Squad" maxlength="50" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input type="text" class="form-input" id="newGroupDesc" placeholder="What's this group for?" maxlength="100" />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" id="createGroupCancel">Cancel</button>
+          <button type="submit" class="btn-save">Create Group</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JOIN GROUP MODAL -->
+  <div class="modal-backdrop" id="joinGroupBackdrop" hidden>
+    <div class="modal-card" style="max-width:380px">
+      <div class="modal-header">
+        <h2 class="modal-title">Join Group</h2>
+        <button class="modal-close" id="joinGroupClose">✕</button>
+      </div>
+      <form id="joinGroupForm" novalidate>
+        <div class="form-group">
+          <label class="form-label">Group ID <span class="required">*</span></label>
+          <input type="text" class="form-input" id="joinGroupId" placeholder="Paste the Group ID here" maxlength="12" required />
+          <span class="form-hint">Ask your friend for their group's ID</span>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" id="joinGroupCancel">Cancel</button>
+          <button type="submit" class="btn-save">Join Group</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRM -->
+  <div class="modal-backdrop confirm-backdrop" id="confirmBackdrop" hidden>
+    <div class="confirm-card">
+      <div class="confirm-icon">🗑️</div>
+      <h3 class="confirm-title">Delete Task?</h3>
+      <p class="confirm-desc">This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn-cancel" id="confirmCancel">Keep It</button>
+        <button class="btn-delete-confirm" id="confirmDelete">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOTIVATIONAL POPUP -->
+  <div class="motivation-popup" id="motivationPopup" hidden>
+    <button class="motivation-close" id="motivationClose">✕</button>
+    <div class="motivation-emoji" id="motivationEmoji">💪</div>
+    <div class="motivation-quote" id="motivationQuote"></div>
+    <div class="motivation-source">— Your FocusSprint Motivation</div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <!-- JS modules — order matters -->
+  <script src="storage.js"></script>
+  <script src="theme.js"></script>
+  <script src="tasks.js"></script>
+  <script src="analytics.js"></script>
+  <script src="profile.js"></script>
+  <script src="leaderboard.js"></script>
+  <script src="groups.js"></script>
+  <script src="app.js"></script>
+  <script src="ui.js"></script>
+  
+</body>
+</html>
